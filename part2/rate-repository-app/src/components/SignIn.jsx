@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
     },
     upperContainer: {
         flexDirection: 'column',
-        flexWrap: 'wrap',
         backgroundColor: theme.colors.textSecondary,
         padding: 10
     },

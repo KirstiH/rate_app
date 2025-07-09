@@ -6,15 +6,13 @@ import theme from '../theme';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 2,
     padding: 10,
     backgroundColor: theme.colors.textSecondary,
     marginBottom: 10,
   },
   upperContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    spaceBetween: 10,
   },
   containerForImage: {
     flexDirection: 'column',
@@ -24,7 +22,6 @@ const styles = StyleSheet.create({
   },
   containerForText: {
     flexDirection: 'column',
-    flexWrap: 'wrap',
   },
   tinyLogo: {
     width: 50,
@@ -36,18 +33,20 @@ const styles = StyleSheet.create({
     fontWeight: theme.fontWeights.bold,
     color: theme.colors.textPrimary,
     paddingBottom: 10,
+    fontFamily: theme.fonts.main,
   },
   infoText: {
     color: theme.colors.lighterText,
     paddingBottom: 10,
+    fontFamily: theme.fonts.main,
   },
   textBox: {
     backgroundColor: theme.colors.primary,
     borderRadius: 5,
     padding: 5,
     color: theme.colors.textSecondary,
-    boxSizing: 'border-box',
-    width: 'fit-content'
+    alignSelf: 'flex-start',
+    fontFamily: theme.fonts.main,
   },
   lowerContainer: {
     flexDirection: 'row',
