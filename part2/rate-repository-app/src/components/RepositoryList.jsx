@@ -60,7 +60,7 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryList = () => {
   return (
-    <FlatList styles={styles.separator}
+    <FlatList
       data={repositories}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({item}) => 
@@ -68,8 +68,8 @@ const RepositoryList = () => {
             fullName={item.fullName}
             description={item.description}
             language={item.language}
-            stargazersCount={item.stargazersCount}
-            forksCount={item.forksCount}
+            stargazersCount={item.stargazersCount ? item.stargazersCount > 1000 ? (item.stargazersCount / 1000).toFixed(1) + 'k' : item.stargazersCount : item.stargazersCount}
+            forksCount={item.forksCount ? item.forksCount > 1000 ? (item.forksCount / 1000).toFixed(1) + 'k' : item.forksCount : item.forksCount}
             reviewCount={item.reviewCount}
             ratingAverage={item.ratingAverage}
             ownerAvatarUrl={item.ownerAvatarUrl}
