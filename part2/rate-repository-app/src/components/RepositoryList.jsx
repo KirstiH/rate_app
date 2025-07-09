@@ -1,9 +1,11 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { FlatList, View, StyleSheet } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 
 const styles = StyleSheet.create({
   separator: {
     height: 10,
+    backgroundColor: '#E1E4E8',
   },
 });
 
@@ -58,7 +60,7 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryList = () => {
   return (
-    <FlatList
+    <FlatList styles={styles.separator}
       data={repositories}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({item}) => 
@@ -70,6 +72,7 @@ const RepositoryList = () => {
             forksCount={item.forksCount}
             reviewCount={item.reviewCount}
             ratingAverage={item.ratingAverage}
+            ownerAvatarUrl={item.ownerAvatarUrl}
         />
       }
       keyExtractor={(item) => item.id}
