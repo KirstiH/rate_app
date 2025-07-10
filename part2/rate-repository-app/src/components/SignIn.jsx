@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
         color: theme.colors.textSecondary,
         fontWeight: theme.fontWeights.bold,
         fontSize: theme.fontSizes.subheading,
+        fontFamily: theme.fonts.main,
     },
     inputBox: {
         borderWidth: 1,
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
         color: theme.colors.lighterText,
         borderRadius: 5,
         fontSize: theme.fontSizes.subheading,
+        fontFamily: theme.fonts.main,
     },
     inputBoxError: {
         borderWidth: 1,
@@ -46,10 +48,12 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         fontSize: theme.fontSizes.subheading,
         color: theme.colors.lighterText,
+        fontFamily: theme.fonts.main,
     },
     error: {
         color: theme.colors.error,
         paddingBottom: 10,
+        fontFamily: theme.fonts.main,
     }
 })
 

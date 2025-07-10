@@ -59,11 +59,13 @@ const styles = StyleSheet.create({
   },
   TextForData: {
     paddingRight: 30,
-    fontWeight: theme.fontWeights.bold
+    fontWeight: theme.fontWeights.bold,
+    fontFamily: theme.fonts.main,
   },
   TextForData2: {
     color: theme.colors.lighterText,
-    paddingRight: 30
+    paddingRight: 30,
+    fontFamily: theme.fonts.main,
   }
 })
 
