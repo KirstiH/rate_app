@@ -5,6 +5,9 @@ import Text from './Text';
 import theme from '../theme';
 import { Link } from "react-router-native";
 import { ScrollView } from 'react-native';
+import { useQuery } from '@apollo/client';
+import { ME } from '../graphql/queries';
+import { useState } from 'react';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,6 +40,20 @@ const onPressFunction = () => {
 };
 
 const AppBar = () => {
+
+  const [showSignOut, setShowSignOut] = useState(false);
+
+  const signOut = () => {
+    const { data } = useQuery(ME, {
+      fetchPolicy: 'cache-and-network',
+    });
+  
+    if (data) {
+      setShowSignOut(true);
+    }
+  }
+  
+
   return (
     <View style={styles.container}>
       <ScrollView horizontal style={styles.scroll}>
@@ -45,7 +62,10 @@ const AppBar = () => {
             <Text style={styles.containerText}>Repositories</Text>
           </Link>
         </Pressable>
-        <Link to="/signin">
+        <Pressable onPress={showSignOut}>
+          <Text style={styles.containerText}>Sign out</Text>
+        </Pressable>
+        <Link style={showSignOut} to="/signin">
             <Text style={styles.containerText}>Sign in</Text>
         </Link>
       </ScrollView>
