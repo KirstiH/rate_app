@@ -13,7 +13,7 @@ import { createHttpLink } from '@apollo/client/link/http';
 //   });
 // };
 
-const { apolloUri } = Constants.expoConfig.extra.uri;
+const apolloUri = Constants.expoConfig.extra.uri;
 
 const httpLink = createHttpLink({
   uri: apolloUri,

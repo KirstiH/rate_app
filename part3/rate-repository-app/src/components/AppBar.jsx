@@ -6,8 +6,10 @@ import theme from '../theme';
 import { Link } from "react-router-native";
 import { ScrollView } from 'react-native';
 import { useQuery } from '@apollo/client';
-import { ME } from '../graphql/queries';
+import { ME } from '../graphql/mutations';
 import { useState } from 'react';
+import useAuthStorage from '../hooks/useAuthStorage';
+import ApolloClient from '../utils/apolloClient';
 
 const styles = StyleSheet.create({
   container: {
@@ -41,16 +43,22 @@ const onPressFunction = () => {
 
 const AppBar = () => {
 
-  const [showSignOut, setShowSignOut] = useState(false);
+  const [currentUser, setCurrentUser] = useState(false);
 
-  const signOut = () => {
-    const { data } = useQuery(ME, {
-      fetchPolicy: 'cache-and-network',
-    });
+  const { data } = useQuery(ME, {
+    refetchWritePolicy: 'cache-and-network',
+  });
   
-    if (data) {
-      setShowSignOut(true);
-    }
+  const authStorage = useAuthStorage();
+
+  const handleSignOut = () => {
+    authStorage.removeAccessToken();
+    ApolloClient.resetStore();
+  }
+
+  if(data && data.me) {
+    setCurrentUser(data.me.username);
+    console.log('current user: ', currentUser);
   }
   
 
@@ -62,10 +70,10 @@ const AppBar = () => {
             <Text style={styles.containerText}>Repositories</Text>
           </Link>
         </Pressable>
-        <Pressable onPress={showSignOut}>
-          <Text style={styles.containerText}>Sign out</Text>
+        <Pressable action={handleSignOut} show={true}>
+                {currentUser ? <Text style={styles.containerText}>{data.me.username}</Text> : <Text>Not signed in</Text>}
         </Pressable>
-        <Link style={showSignOut} to="/signin">
+        <Link show={!currentUser} to="/signin">
             <Text style={styles.containerText}>Sign in</Text>
         </Link>
       </ScrollView>
