@@ -1,8 +1,9 @@
 
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloLink } from '@apollo/client';
 import Constants from 'expo-constants';
-import { setContext } from '@apollo/client/link/context';
+// import { setContext } from '@apollo/client/link/context';
 import { createHttpLink } from '@apollo/client/link/http';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 // const createApolloClient = () => {
@@ -19,23 +20,40 @@ const httpLink = createHttpLink({
   uri: apolloUri,
 });
 
-const createApolloClient = (authStorage) => {
-  const authLink = setContext(async (_, { headers }) => {
-    try {
-      const accessToken = await authStorage.getAccessToken();
-      return {
+const createApolloClient = () => {
+
+  const authLink = new ApolloLink(async (operation, forward) => {
+    const token = await AsyncStorage.getItem('auth:accessToken'); // Make sure this key matches
+
+    if (token) {
+      operation.setContext(({ headers = {} }) => ({
         headers: {
           ...headers,
-          authorization: accessToken ? `Bearer ${accessToken}` : '',
+          authorization: `Bearer ${JSON.parse(token)}`,
         },
-      };
-    } catch (e) {
-      console.log(e);
-      return {
-        headers,
-      };
+      }));
     }
+
+    return forward(operation);
   });
+
+// const createApolloClient = (authStorage) => {
+//   const authLink = setContext(async (_, { headers }) => {
+//     try {
+//       const accessToken = await authStorage.getAccessToken();
+//       return {
+//         headers: {
+//           ...headers,
+//           authorization: accessToken ? `Bearer ${accessToken}` : '',
+//         },
+//       };
+//     } catch (e) {
+//       console.log(e);
+//       return {
+//         headers,
+//       };
+//     }
+//   });
   return new ApolloClient({
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),

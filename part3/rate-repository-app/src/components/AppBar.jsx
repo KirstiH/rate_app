@@ -7,9 +7,8 @@ import { Link } from "react-router-native";
 import { ScrollView } from 'react-native';
 import { useQuery } from '@apollo/client';
 import { ME } from '../graphql/mutations';
-import { useState } from 'react';
 import useAuthStorage from '../hooks/useAuthStorage';
-import ApolloClient from '../utils/apolloClient';
+import { useApolloClient } from '@apollo/client';
 
 const styles = StyleSheet.create({
   container: {
@@ -43,23 +42,30 @@ const onPressFunction = () => {
 
 const AppBar = () => {
 
-  const [currentUser, setCurrentUser] = useState(false);
+  // const [currentUser, setCurrentUser] = useState(false);
 
-  const { data } = useQuery(ME, {
-    refetchWritePolicy: 'cache-and-network',
-  });
+  // const { data } = useQuery(ME, {
+  //   refetchWritePolicy: 'cache-and-network',
+  // });
+
+const { data } = useQuery(ME, {
+  refetchWritePolicy: 'cache-and-network',
+});
+
+// useEffect(() => {
+//   if (error) console.log("ME query error:", error);
+//   if (data) console.log("ME query data:", data);
+// }, [data, error]);
   
   const authStorage = useAuthStorage();
+  const apolloClient = useApolloClient();
 
-  const handleSignOut = () => {
-    authStorage.removeAccessToken();
-    ApolloClient.resetStore();
-  }
+  const handleSignOut = async () => {
+    await authStorage.removeAccessToken();
+    apolloClient.resetStore();
+  };
 
-  if(data && data.me) {
-    setCurrentUser(data.me.username);
-    console.log('current user: ', currentUser);
-  }
+  const isSignedIn = data?.me?.username != null;
   
 
   return (
@@ -70,12 +76,15 @@ const AppBar = () => {
             <Text style={styles.containerText}>Repositories</Text>
           </Link>
         </Pressable>
-        <Pressable action={handleSignOut} show={true}>
-                {currentUser ? <Text style={styles.containerText}>{data.me.username}</Text> : <Text>Not signed in</Text>}
+        {isSignedIn ? (
+          <Pressable onPress={handleSignOut}>
+          <Text style={styles.containerText}>Sign out</Text>
         </Pressable>
-        <Link show={!currentUser} to="/signin">
+        ) : (
+          <Link to="/signin">
             <Text style={styles.containerText}>Sign in</Text>
-        </Link>
+          </Link>
+        )}
       </ScrollView>
     </View>
   );
