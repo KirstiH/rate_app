@@ -42,20 +42,10 @@ const onPressFunction = () => {
 
 const AppBar = () => {
 
-  // const [currentUser, setCurrentUser] = useState(false);
-
-  // const { data } = useQuery(ME, {
-  //   refetchWritePolicy: 'cache-and-network',
-  // });
-
 const { data } = useQuery(ME, {
   refetchWritePolicy: 'cache-and-network',
 });
 
-// useEffect(() => {
-//   if (error) console.log("ME query error:", error);
-//   if (data) console.log("ME query data:", data);
-// }, [data, error]);
   
   const authStorage = useAuthStorage();
   const apolloClient = useApolloClient();
